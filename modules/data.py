@@ -3,6 +3,8 @@ import warnings
 from decouple import config
 from datetime import datetime, timedelta
 from azure.data.tables import TableClient
+from azure.core.exceptions import HttpResponseError
+
 warnings.filterwarnings('ignore')
 
 class GetData():
@@ -10,11 +12,17 @@ class GetData():
     table = config("TABLE")
     
     def Get(self):
-        client = TableClient.from_connection_string(conn_str=self.cs, table_name=self.table)
-        dt = str(datetime.today() - timedelta(days=1)).replace(" ", "T")
-        parameters = {"datetime": dt}
-        query_filter = "Battery le 100"
-        table = client.query_entities(query_filter=query_filter, parameters=parameters)
-        for e in table:
-            for k in e.keys():
-                return json.dumps(f"Key: {k}, Value: {e[k]}")    
+        with TableClient.from_connection_string(conn_str=self.cs, table_name=self.table) as client:
+            try:
+                dt = str(datetime.today() - timedelta(days=1)).replace(" ", "T")
+                # parameters = {"datetime": dt}
+                parameters = {"btryLvl": 100}
+                query_filter = "Battery le @btryLvl"
+                queried_entities = client.query_entities(query_filter=query_filter,parameters=parameters)
+                print(queried_entities)
+                for e in queried_entities:
+                    print(json.dumps(e))
+            except HttpResponseError as err:
+                print(err)
+data = GetData()
+data.Get()
