@@ -3,26 +3,26 @@ import warnings
 from decouple import config
 from datetime import datetime, timedelta
 from azure.data.tables import TableClient
+from azure.core.exceptions import HttpResponseError
+
 warnings.filterwarnings('ignore')
 
 class GetData():
     cs = config("CONNECTION_STRING")
     table = config("TABLE")
-    jd = {}
+    jdata = list()
+    count = 0
     
-    def GetFromAccountTable(self):
-        try:
-            client = TableClient.from_connection_string(conn_str=self.cs, table_name=self.table)
-        except:
-            return "No connection could be made"
-        dt = str(datetime.today() - timedelta(days=1)).replace(" ", "T")
-        parameters = {"datetime": dt}
-        query_filter = "RowKey le @datetime"
-        try:
-            table = client.query_entities(query_filter=query_filter, parameters=parameters)
-            for e in table:
-                for k in e.keys():
-                    self.jd.update({'Key': k, 'Value': e[k]})
-            return self.jd
-        except:
-            return "Cannot query the database, no results found"
+    def Get(self):
+        with TableClient.from_connection_string(conn_str=self.cs, table_name=self.table) as client:
+            try:
+                dt = str(datetime.today() - timedelta(days=1)).replace(" ", "T")
+                # parameters = {"datetime": dt}
+                parameters = {"btryLvl": 100}
+                query_filter = "Battery le @btryLvl"
+                queried_entities = client.query_entities(query_filter=query_filter,parameters=parameters)
+                for e in queried_entities:
+                    self.jdata.append(e)
+                return self.jdata
+            except HttpResponseError as err:
+                return(err)
