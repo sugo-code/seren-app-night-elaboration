@@ -1,12 +1,11 @@
-import json
+import sys
 import datetime
 import azure.functions as func
-from modules import DataElaboration
+sys.path.insert(1, r'C:\Users\Devis\Desktop\Project Work anno 2\Function - Night Elaboration\NightElab\modules')
 
-data = DataElaboration()
+from elaboration import UploadData
 
 def main(mytimer: func.TimerRequest) -> None:
     utc_timestamp = datetime.datetime.utcnow().replace(
         tzinfo=datetime.timezone.utc).isoformat()
-    
-    data.CalculateMedians()
+    UploadData()

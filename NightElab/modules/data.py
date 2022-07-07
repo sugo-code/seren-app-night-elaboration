@@ -4,7 +4,6 @@ from decouple import config
 from datetime import datetime, timedelta
 from azure.data.tables import TableClient
 from azure.core.exceptions import HttpResponseError
-
 warnings.filterwarnings('ignore')
 
 class GetData():
@@ -27,6 +26,3 @@ class GetData():
                 self.jd.clear()
             except HttpResponseError as err:
                 return(err)
-    
-# data = GetData()
-# print(data.Get())
