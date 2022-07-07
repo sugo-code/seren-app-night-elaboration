@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 class GetData():
     cs = config("CONNECTION_STRING")
     table = config("TABLE")
-    jdata = list()
+    jd = list()
     count = 0
     
     def Get(self):
@@ -22,7 +22,11 @@ class GetData():
                 query_filter = "Battery le @btryLvl"
                 queried_entities = client.query_entities(query_filter=query_filter,parameters=parameters)
                 for e in queried_entities:
-                    self.jdata.append(e)
-                return self.jdata
+                    self.jd.append(e)
+                return self.jd
+                self.jd.clear()
             except HttpResponseError as err:
                 return(err)
+    
+# data = GetData()
+# print(data.Get())
