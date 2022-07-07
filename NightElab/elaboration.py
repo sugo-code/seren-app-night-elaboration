@@ -2,7 +2,7 @@ import json
 import warnings
 import pandas as pd
 import urllib.parse
-from data import GetData
+from .data import GetData
 from decouple import config
 from sqlalchemy import create_engine
 from datetime import datetime, timedelta
