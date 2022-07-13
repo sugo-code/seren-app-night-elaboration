@@ -4,9 +4,9 @@ La finalità della Azure Function è quella di creare delle elaborazioni notturn
 ## Tecnologie
 - Azure Functions for Python
 - Pandas
-- Matplotlib (da verificare ancora in base alla libreria che verrà usata)
+- SQLAlchemy
 ## Funzionamento
-Il progetto è stato diviso in due parti: una cartella *modules* che contiene i moduli per la connessione e l'elaborazione dei dati e la cartella *nightelab* che contiene i file necessari per il corretto funzionamento della Azure Function.
-La Function richiama il modulo di elaborazione che conterrà tutta la logica per recuperare i dati ed effettuare le elaborazioni. A quel punto verranno restituiti alla Function i grafici elaborati e quest'ultima si occuperà di rendere disponibili questi ultimi alla dashboard.
+Il progetto contiene i moduli per la connessione al database (data.py) e l'elaborazione dei dati (elaboration.py).
+La Function richiama il modulo di elaborazione che contiene tutta la logica per recuperare i dati ed effettuare le elaborazioni. Questi dati verranno poi restituiti alla Function che si occupera del loro caricamento su database.
 ## Istruzioni
-Il progetot è stato realizzato in un ambiente virtuale creato mediante *virtualenv*. Per il funzionamento è necessario installare le dipendenze tramite il comando `pip install -r requirments.txt`. Verificare quindi di avviare correttamente l'ambiente virtuale ed avviare la Function 
+Il progetto è stato realizzato in un ambiente virtuale creato mediante *virtualenv*. Per il funzionamento in locale è necessario installare le dipendenze tramite il comando `pip install -r requirments.txt`. Verificare quindi il corretto avvio dell'ambiente virtuale e, a qual punto, avviare la Function.
